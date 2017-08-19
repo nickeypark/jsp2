@@ -28,8 +28,9 @@
 		<a class="navbar-brand" href=""> JSP 게시판 웹 사이트</a>
 		</div>
 	</nav>
-		안녕하세요!<br/> 처음 만나서 반갑습니다.<br/> 처음 만든 프로젝트 index.html 파일 입니다.<br/>
-			<form action="/login_proc.jsp">
+		<%=session.getId() %>
+		<%=request.getParameter("id") %>
+			<form action="./login_ok.jsp">
 				아이디 : <input type="text" name="id1" id="id" ><br/>
 				비밀번호 : <input type="password" name="pwd1" id="pwd" ><br/>
 				<input type="submit" value="로그인">		
