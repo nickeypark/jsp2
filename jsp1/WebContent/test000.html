@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<script>
+var test = function(){
+	this.a = "123"; //Public  - this 선언시
+	var b = "456";  //Private - var 선언시
+	this.tt = function(){
+		alert(b);
+		alert("아~~");
+	}
+	var tt2 = function(){
+		alert("tt2");
+	}
+	this.arr = {};
+	this.arr["key1"] = "value1";
+	this.arr["key2"] = "value2";
+}
+function test1(){
+	var t = new test();
+	alert(t.arr["key1"]);	
+}
+
+
+</script>
+<body>
+<input type="button" value="click" onclick="test1()">
+</body>
+</html>
