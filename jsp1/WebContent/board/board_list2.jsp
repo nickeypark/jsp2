@@ -7,6 +7,11 @@
 function callback(result){
 //	result = JSON.parse(result);
 	/** Bootstrap 통한 속성값 불러오기 **/
+	if(result.error){
+		alert(result.error);
+		return;
+	}
+	$("#table").bootstrapTable('destroy');
 	$("#table").bootstrapTable(
 		{data : result}		
 	);
@@ -30,7 +35,11 @@ function getBoardList(content){
 	if(content){
 		param["content"]= content;
 	}
-	param = JSON.stringify(param);
+	var page = {};
+	page["nowPage"] = 1;
+	param = "param=" + JSON.stringify(param);
+	param += "&page=" + JSON.stringify(page);	
+	//param = JSON.stringify(param);
 	var ja = new JqAjax("list.board",param);
 	ja.changeFunc(callback);
 	ja.send();
@@ -53,12 +62,13 @@ $(document).ready(function(){
 <body>
 내용 : <input type="text" name="searchStr" id="searchStr"/>
 <input type="button" value="검색" id="btnSearch"/>
-<table id="table" data-height="450" class="table table-bordered table-hover"  border="1">
+<table id="table" data-height="650" class="table table-bordered table-hover"  border="1">
 	<thead>
 		<tr align="center">
 			<th data-field="bNum" class="text-center">번호</th>
 			<th data-field="title" class="text-center">이름</th>
 			<th data-field="writer" class="text-center">생성자</th>
+			<th data-field="userName" class="text-center">게시자명</th>
 			<th data-field="regDate" class="text-center">생성일자</th>
 			<th data-field="content" class="text-center">내용</th>			
 		 </tr>

@@ -8,6 +8,7 @@ import java.util.Map;
 import common.DBconnector;
 import dao.BoardDAO;
 import dto.Board;
+import dto.Page;
 import service.BoardService;
 
 public class BoardServiceImpl implements BoardService {
@@ -15,12 +16,12 @@ public class BoardServiceImpl implements BoardService {
 	private BoardDAO bDAO = new BoardDAO();
 
 	@Override
-	public List<Board> selectBoardList() {
+	public List<Board> selectBoardList(Map<String, String> pHm, Page p) {
 		Connection con;
 		List<Board> userList = null;
 		try {
 			con = DBconnector.getCon();
-			userList = bDAO.selectBoardList(con);
+			userList = bDAO.selectBoardList(con,pHm,p);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {

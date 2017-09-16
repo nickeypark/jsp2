@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import dto.Board;
+import dto.Page;
 import service.BoardService;
 import service.impl.BoardServiceImpl;
 
@@ -29,16 +30,26 @@ public class BoardServlet extends CommonServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse resp)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
-		String command = request.getParameter("command");
-		if(command==null) {
-			Map<String,String> pMap = g.fromJson(request.getReader(), HashMap.class);
-			command = pMap.get("command");
-		}
+		
+		String param = request.getParameter("param");
+		String page = request.getParameter("page");
+		Map<String, String> pMap = g.fromJson(param, HashMap.class);
+		Page p = g.fromJson(page, Page.class);
+		System.out.println(pMap);
+		String command = pMap.get("command");
+		String content = pMap.get("content");
+		String result= "";
 		if(command.equals("list")) {
-			List<Board> boardList = bs.selectBoardList();
-			String result = g.toJson(boardList);
-			doProcess(resp, result);
+			if(content!=null && content.trim().length()<=1) {
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("error", "한글자로 검색하지 말라고!!");
+				result = g.toJson(map);
+			}else {
+				List<Board> boardList = bs.selectBoardList(pMap,p);
+				result = g.toJson(boardList);
+			}
 		}
+		doProcess(resp, result);
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse resp)	throws ServletException, IOException {
@@ -47,7 +58,7 @@ public class BoardServlet extends CommonServlet {
 		String command = request.getParameter("command");
 		if(command.endsWith("list")) {
 			RequestDispatcher rd = request.getRequestDispatcher("/board/board_list.jsp");
-			List<Board> boardList = bs.selectBoardList();
+			List<Board> boardList = bs.selectBoardList(null,null);
 			request.setAttribute("boardList", boardList);
 			rd.forward(request, resp);
 		}
