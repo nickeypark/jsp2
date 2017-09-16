@@ -21,7 +21,10 @@ public class BoardServiceImpl implements BoardService {
 		List<Board> userList = null;
 		try {
 			con = DBconnector.getCon();
-			userList = bDAO.selectBoardList(con,pHm,p);
+			// userList = bDAO.selectBoardList(con,pHm,p);
+			int totalCnt = bDAO.selectBoardCount(con,pHm,p);
+			p.setTotalCnt(totalCnt);
+			userList = bDAO.selectBoardList(con, pHm, p);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
